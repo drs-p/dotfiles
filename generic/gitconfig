@@ -1,0 +1,12 @@
+[alias]
+    lg = log --all --decorate=short --pretty=format:'%C(bold blue)%h%C(reset) %C(bold red)%d%C(reset) %C(white)%s%C(reset) %C(dim cyan)(%ar)%C(reset)' --graph
+
+[core]
+    editor = nvim
+
+[user]
+    name = Marc Penninga
+    email = marcpenninga@gmail.com
+
+[init]
+    defaultBranch = main

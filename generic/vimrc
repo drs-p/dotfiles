@@ -1,0 +1,156 @@
+set nocompatible        " allow non-vi-compatible features
+set encoding=utf-8
+set fileformat=unix
+
+filetype plugin on
+set autoindent          " copy indent from previous line
+filetype indent on      " auto-indent based on filetype
+syntax enable
+au BufRead,BufFilePre,BufNewFile *.py,*.py3,*.sage let python_highlight_all=1
+au BufRead,BufFilePre,BufNewFile *.md set filetype=markdown.pandoc
+let g:tex_flavor = "latex"
+
+set tabstop=4           " used for displaying existing Tabs
+set softtabstop=4       " used when editing
+set expandtab           " expand Tabs to spaces
+set shiftwidth=4        " used when shifting left/right
+set shiftround          " always indent to multiples of shiftwidth
+set smarttab            " autoindent by shiftwidth
+au BufRead,BufFilePre,BufNewFile Makefile* set noexpandtab
+
+set number              " show line numbers
+set laststatus=2        " show status bar
+set noshowmode          " not necessary since we're using Lightline
+
+set showmatch           " show matching quote/parenthesis
+set incsearch           " show matches while typing
+set hlsearch            " highlight all matches
+set virtualedit=block   " allow selecting beyond EOL
+
+set splitbelow          " open new windows below ...
+set splitright          " ... or to the right
+
+" Fix Ctrl-PageUp/Down
+nnoremap [5;5~ :tabprevious<cr>
+nnoremap [6;5~ :tabnext<cr>
+
+set ttimeoutlen=10
+tnoremap <Esc> <C-\><C-n>   " Terminal-Normal mode
+
+fun! TrimWhitespace()
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+autocmd BufWritePre * :call TrimWhitespace()
+
+" Use 24-bit colours
+if exists('+termguicolors')
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    set termguicolors
+endif
+highlight Comment cterm=italic
+
+set background=dark
+let g:nord_italic = 1
+let g:nord_italic_comments = 1
+colorscheme nord
+
+let g:lightline = {
+    \ 'active': {
+    \   'left': [ ['mode', 'paste'],
+    \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ] },
+    \ 'component_function': {
+    \   'gitbranch': 'LightlineGitbranch',
+    \   'readonly': 'LightlineReadonly',
+    \ },
+    \ 'separator': { 'left': '', 'right': ''  },
+    \ 'subseparator': { 'left': '', 'right': ''  } }
+function! LightlineReadonly()
+    return &readonly ? '' : ''
+endfunction
+function! LightlineGitbranch()
+    if exists('*gitbranch#name')
+        let branch = gitbranch#name()
+        return branch !=# '' ? ' '.branch : ''
+    endif
+    return ''
+endfunction
+let g:lightline.colorscheme = 'nord'
+" Some manual edits to nord's lightline colors:
+" let s:p.insert.left = [ [ s:nord1, s:nord14 ], [ s:nord5, s:nord1 ] ]
+" let s:p.replace.left = [ [ s:nord5, s:nord11 ], [ s:nord5, s:nord1 ] ]
+" let s:p.visual.left = [ [ s:nord1, s:nord15 ], [ s:nord5, s:nord1 ] ]
+let g:lightline#colorscheme#nord#palette = {
+    \ 'inactive': {
+        \ 'right': [
+            \ ['#E5E9F0', '#3B4252', 7, 0],
+            \ ['#E5E9F0', '#3B4252', 7, 0]],
+        \ 'middle': [
+            \ ['#E5E9F0', '#3B4252', 7, 0]],
+        \ 'left': [
+            \ ['#3B4252', '#88C0D0', 0, 6],
+            \ ['#E5E9F0', '#3B4252', 7, 0]]},
+    \ 'replace': {
+        \ 'left': [
+            \ ['#E5E9F0', '#BF616A', 7, 1],
+            \ ['#E5E9F0', '#3B4252', 7, 0]]},
+    \ 'normal': {
+        \'right': [
+            \ ['#E5E9F0', '#3B4252', 7, 0],
+            \ ['#E5E9F0', '#3B4252', 7, 0]],
+        \ 'middle': [
+            \ ['#E5E9F0', '#4C566A', 7, 8]],
+        \ 'warning': [['#3B4252', '#EBCB8B', 0, 3]],
+        \ 'left': [
+            \ ['#3B4252', '#88C0D0', 0, 6],
+            \ ['#E5E9F0', '#3B4252', 7, 0]],
+        \ 'error': [
+            \ ['#3B4252', '#BF616A', 0, 1]]},
+    \ 'tabline': {
+        \ 'right': [['#E5E9F0', '#4C566A', 7, 8]],
+        \ 'middle': [['#E5E9F0', '#4C566A', 7, 8]],
+        \ 'left': [['#E5E9F0', '#4C566A', 7, 8]],
+        \ 'tabsel': [['#3B4252', '#88C0D0', 0, 6]]},
+    \ 'visual': {
+        \ 'left': [
+            \ ['#3B4252', '#B48EAD', 0, 5],
+            \ ['#E5E9F0', '#3B4252', 7, 0]]},
+    \ 'insert': {
+        \ 'left': [
+            \ ['#3B4252', '#A3BE8C', 0, 2],
+            \ ['#E5E9F0', '#3B4252', 7, 0]]}}
+
+" table-mode.vim: create ReST-compatible tables
+let g:table_mode_corner_corner='+'
+let g:table_mode_header_fillchar='='
+
+
+" " Powerline separators require special fonts (apt install fonts-powerline)
+" packadd tmuxline
+" let g:tmuxline_powerline_separators = 1
+" let g:tmuxline_theme = 'lightline_insert'
+" let g:tmuxline_preset = {
+"     \ 'a': '#h',
+"     \ 'win': '#W',
+"     \ 'cwin': '#W',
+"     \ 'y': '%a %e %b',
+"     \ 'z': '%k:%M',
+"     \ }
+" " After changing, call :Tmuxline and :TmuxlineSnapshot ~/.tmuxline.conf;
+" " the output file .tmuxline.conf should be sourced by .tmux.conf
+
+" " Powerline separators require special fonts (apt install fonts-powerline)
+" packadd promptline
+" let g:promptline_powerline_symbols = 1
+" let g:promptline_theme = 'lightline'
+" let g:promptline_preset = {
+"     \ 'a': [ promptline#slices#host({ 'only_if_ssh': 1 }) ],
+"     \ 'b': [ promptline#slices#vcs_branch(),
+"         \    promptline#slices#git_status(),
+"         \    promptline#slices#python_virtualenv() ],
+"     \ 'c': [ '\w' ],
+"     \ 'warn': [ promptline#slices#last_exit_code() ] }
+" " Call :PromptlineSnapshot ~/.bash-promptline;
+" " the output file .bash-promptline should be sourced by .bashrc
