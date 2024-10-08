@@ -137,9 +137,6 @@ export TEXINPUTS="/home/marc/opt/miniforge3/envs/sage/share/texmf//:"
 #     export TEXINPUTS="$(sage --root)/venv/share/texmf//:"
 # fi
 
-if command -v pyenv &>/dev/null; then
-    eval "$(pyenv init -)"
-fi
 export EDITOR=nvim
 
 function update-repos() {
@@ -147,3 +144,5 @@ function update-repos() {
         (cd "$fn"; git pull)
     done
 }
+
+. "$HOME/.cargo/env"
