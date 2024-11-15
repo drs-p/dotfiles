@@ -1,5 +1,5 @@
 [alias]
-    lg = log --all --decorate=short --pretty=format:'%C(bold blue)%h%C(reset) %C(bold red)%d%C(reset) %C(white)%s%C(reset) %C(dim cyan)(%ar)%C(reset)' --graph
+    lg = log --all --decorate --oneline --graph
 
 [core]
     editor = nvim
