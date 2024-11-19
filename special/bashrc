@@ -132,11 +132,6 @@ export LDFLAGS="-L$LOCALDIR/lib64 -Wl,-rpath=$LOCALDIR/lib64 -L$LOCALDIR/lib -Wl
 export PKG_CONFIG_PATH=$LOCALDIR/lib/pkgconfig
 export PATH=$LOCALDIR/bin:$PATH
 
-export TEXINPUTS="/home/marc/opt/miniforge3/envs/sage/share/texmf//:"
-# if command -v sage &>/dev/null; then
-#     export TEXINPUTS="$(sage --root)/venv/share/texmf//:"
-# fi
-
 export EDITOR=nvim
 
 function update-repos() {
@@ -144,5 +139,3 @@ function update-repos() {
         (cd "$fn"; git pull)
     done
 }
-
-. "$HOME/.cargo/env"
