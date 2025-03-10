@@ -112,9 +112,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
-PATH=$HOME/texlive/2024/bin/x86_64-linux:$PATH
-MANPATH=$HOME/texlive/2024/texmf-dist/doc/man:$MANPATH
-INFOPATH=$HOME/texlive/2024/texmf-dist/doc/info:$INFOPATH
+PATH=$HOME/texlive/2025/bin/x86_64-linux:$PATH
+MANPATH=$HOME/texlive/2025/texmf-dist/doc/man:$MANPATH
+INFOPATH=$HOME/texlive/2025/texmf-dist/doc/info:$INFOPATH
 
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
