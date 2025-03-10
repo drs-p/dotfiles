@@ -139,3 +139,5 @@ function update-repos() {
         (cd "$fn"; git pull)
     done
 }
+
+export LIBVIRT_DEFAULT_URI=qemu:///system
